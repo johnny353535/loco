@@ -22,6 +22,9 @@ var Setup = React.createClass({
     var username = this.state.username;
     this.props.setUsername(username); // Save username
   },
+  getLocationAccess(){
+
+  },
   render() {
 
     var usernameOk = this.state.usernameIsValid;
@@ -51,11 +54,11 @@ var Setup = React.createClass({
         <div className={"panel location "+showLocationPanel}>
           <div className="panel-heading">
             <span className="status"><span className={"glyphicon "+locationStatus}></span></span>
-            <h3 className="panel-title"><span className="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Location required</h3>
+            <h3 className="panel-title"><span className="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Location access required</h3>
           </div>
 
           <div className="panel-body">
-            <span>Loco needs to know your location to find nearby threads. Please allow location access via your browser.</span>
+            <span>Loco needs the permission to access your location. Please allow location access via your browser.</span>
           </div>
         </div>
 

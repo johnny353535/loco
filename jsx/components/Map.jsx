@@ -6,6 +6,11 @@ var Map = React.createClass({
   componentDidMount(){
     this.initializeMap();
   },
+  componentDidUpdate(prevProps, prevState){
+    if(this.props.location && prevProps.location != this.props.location){
+      this.initializeMap();
+    }
+  },
   initializeMap() {
 
     var _this = this;

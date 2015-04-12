@@ -67,6 +67,15 @@ body {
     }
 }
 
+.thread-list .sortByWrapper {
+  float: right;
+  margin-top: -2px;
+}
+
+.thread-list .btn.active {
+  font-weight: bold;
+}
+
 .thread-options-list {
   list-style: none;
   padding: 0;

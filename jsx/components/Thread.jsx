@@ -28,8 +28,8 @@ let Thread = React.createClass({
     map = new GoogleMapsAPI.Map(document.getElementById('map-canvas'),
         mapOptions);
 
-    var pos = {"timestamp":1428411429010,"coords":{"speed":null,"heading":null,"altitudeAccuracy":null,"accuracy":20,"altitude":null,"longitude":8,"latitude":52}};
-    pos = new GoogleMapsAPI.LatLng(pos.coords.latitude, pos.coords.longitude);
+    var location = this.state.thread.get("location");
+    var pos = new GoogleMapsAPI.LatLng(location.latitude, location.longitude);
 
     var marker = new google.maps.Marker({
       position: pos,

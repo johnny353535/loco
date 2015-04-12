@@ -19,8 +19,8 @@ console.log('Hola!');
 let App = React.createClass({
   getInitialState(){
     return {
-      username: null,
-      location: null
+      username: localStorage.getItem("loco-username") ? localStorage.getItem("loco-username") : null,
+      location: localStorage.getItem("loco-location") ? JSON.parse(localStorage.getItem("loco-location")) : null,
     }
   },
   componentWillMount(){
@@ -32,10 +32,12 @@ let App = React.createClass({
   },
   setUsername(username){
     if(this.usernameIsValid(username)){
-      this.setState({
-        username: username,
-        location: this.state.location
-      });
+
+      var newState = this.state;
+      newState.username = username;
+      this.setState(newState);
+
+      localStorage.setItem("loco-username", username);
     } else {
       console.warn("Username invalid!", username);
     }
@@ -46,15 +48,28 @@ let App = React.createClass({
   getUserLocation(){
     var _this = this;
 
+    console.log("Checking for user's location");
+
     // Get the user's location
     navigator.geolocation.getCurrentPosition(function(position){
-      _this.setState({
-        username: _this.state.username,
-        location: position.coords
-      });
+
+      var location = position.coords;
+      console.log("User's location", location);
+
+      var newState = _this.state;
+      newState.location = location;
+      _this.setState(newState);
+
+      localStorage.setItem("loco-location", JSON.stringify(location));
 
     }, function(){
       console.warn('User\'s location unavailable.');
+
+      var newState = _this.state;
+      newState.location = null;
+      _this.setState(newState);
+
+      localStorage.setItem("loco-location", null);
     });
 
   },

@@ -17,6 +17,11 @@ var NewThread = React.createClass({
       this.initializeMap();
     }
   },
+  componentDidUpdate(prevProps, prevState){
+    if(this.props.location && prevProps.location != this.props.location){
+      this.initializeMap();
+    }
+  },
   initializeMap() {
 
     var _this = this;
@@ -113,7 +118,7 @@ var NewThread = React.createClass({
     return (
       <div className="panel panel-default newThread">
         <div className="panel-heading">
-          <h3 className="panel-title"><span className="glyphicon glyphicon-send" aria-hidden="true"></span> Publish Thread</h3>
+          <h3 className="panel-title"><span className="glyphicon glyphicon-send"></span> Publish Thread</h3>
         </div>
 
         <div className="panel-body">
