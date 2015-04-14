@@ -46,7 +46,6 @@ let App = React.createClass({
     return username ? !!(username.length > 5) : false; //Username needs at least 6 characters
   },
   getUserLocation(){
-    var _this = this;
 
     console.log("Checking for user's location");
 
@@ -56,18 +55,19 @@ let App = React.createClass({
       var location = position.coords;
       console.log("User's location", location);
 
-      var newState = _this.state;
+      var newState = this.state;
       newState.location = location;
-      _this.setState(newState);
+      this.setState(newState);
 
       localStorage.setItem("loco-location", JSON.stringify(location));
 
-    }, function(){
+    }.bind(this), function(){
       console.warn('User\'s location unavailable.');
+      alert("Threre was an error retreiving your location!");
 
-      var newState = _this.state;
+      var newState = this.state;
       newState.location = null;
-      _this.setState(newState);
+      this.setState(newState);
 
       localStorage.setItem("loco-location", null);
     });
