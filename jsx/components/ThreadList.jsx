@@ -27,14 +27,10 @@ let ThreadList = React.createClass({
 
     switch(this.state.sortBy) {
       case "closest":
-        threads = Underscore.sortBy(threads, function(thread){
-          return Geolib.getDistance(_this.props.location, thread.location);
-        });
+        threads = Underscore.sortBy(threads, thread => Geolib.getDistance(_this.props.location, thread.location));
         break;
       case "recent":
-        threads = Underscore.sortBy(threads, function(thread){
-          return (now - thread.date);
-        });
+        threads = Underscore.sortBy(threads, thread => (now - thread.date));
         break;
     }
 
@@ -43,20 +39,25 @@ let ThreadList = React.createClass({
       var time = Moment(thread.date, "x").format();
       var timeDiff = Moment(thread.date, "x").fromNow();
 
-      var locationDiff = Geolib.getDistance(_this.props.location, thread.location) + ' meters away';
+      var locationDiff = parseInt(Geolib.getDistance(_this.props.location, thread.location));
+      var badgeContent = this.state.sortBy == "closest" ? (locationDiff+' meters away') : this.state.sortBy = "recent" ? timeDiff : "";
+
+      if(locationDiff > thread.reach) return false;
 
       return (
         <Link to="thread" params={{threadId: thread.id}} key={thread.id} className="list-group-item">
           <span>{thread.title}</span>
-          <span className="badge">{locationDiff}</span>
+          <span className="badge">{badgeContent}</span>
           <h5>
             <span className="label label-warning"><span className="glyphicon glyphicon-user"></span> {thread.user}</span>
              <span className="label label-success" title={time}><span className="glyphicon glyphicon-time"></span> {timeDiff}</span>
-             <span className="label label-info"><span className="glyphicon glyphicon-record"></span> {locationDiff}</span>
+             <span className="label label-info"><span className="glyphicon glyphicon-record"></span> {locationDiff} meters away</span>
           </h5>
         </Link>
       )
-    });
+    }.bind(this));
+
+    console.log(threads)
 
     return (
       <div className="panel panel-default thread-list">
