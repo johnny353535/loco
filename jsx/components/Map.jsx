@@ -15,7 +15,7 @@ var Map = React.createClass({
 
     var _this = this;
     var map = this.map;
-    var pos = new google.maps.LatLng(this.props.location.latitude, this.props.location.longitude);
+    var userLocation = new google.maps.LatLng(this.props.location.latitude, this.props.location.longitude);
 
     var mapOptions = {
       zoom: 14,
@@ -25,7 +25,7 @@ var Map = React.createClass({
     map = new GoogleMapsAPI.Map(document.getElementById('map-canvas'), mapOptions);
 
     var marker = new google.maps.Marker({
-      position: pos,
+      position: userLocation,
       map: map,
       title: 'Your location'
     });
@@ -40,6 +40,8 @@ var Map = React.createClass({
       var thread = threads[i];
       var pos = new google.maps.LatLng(thread.location.latitude,thread.location.longitude);
 
+      if(!thread.visible) continue;
+
       var marker = new google.maps.Marker({
         position: pos,
         map: map,
@@ -49,7 +51,7 @@ var Map = React.createClass({
 
     };
 
-    map.setCenter(pos);
+    map.setCenter(userLocation);
   },
   handleNoGeolocation(errorFlag) {
     var map = this.map;
