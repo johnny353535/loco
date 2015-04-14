@@ -1,4 +1,6 @@
 import React from 'react';
+import Moment from 'moment';
+import Geolib from 'geolib';
 import ThreadStore from '../../stores/ThreadStore.js';
 
 var GoogleMapsAPI = window.google.maps;
@@ -11,12 +13,14 @@ let Thread = React.createClass({
     return {thread: this.props.threads.get(threadId)};
   },
   componentDidMount(){
-    this.initializeMap();
+    if(this.state.thread.get("visible")) this.initializeMap();
   },
   contextTypes: {
     router: React.PropTypes.func
   },
   initializeMap() {
+
+    if(!this.state.thread.get("visible")) return;
 
     var _this = this;
     var map = this.map;
@@ -64,16 +68,23 @@ let Thread = React.createClass({
   render() {
 
     var thread = this.state.thread.toJSON();
+    var time = Moment(thread.date, "x").format();
+    var timeDiff = Moment(thread.date, "x").fromNow();
+
+    var distance = parseInt(Geolib.getDistance(this.props.location, thread.location)) + ' meters away';
+
     var comments = thread.comments.toJSON();
 
     var comments = comments.map(function(comment){
+      var time = Moment(comment.date, "x").format();
+      var timeDiff = Moment(comment.date, "x").fromNow();
 
       return (
         <li className="list-group-item" key={comment.id}>
           <span>{comment.text}</span>
           <h5 className="comment-info">
             <span className="label label-warning"><span className="glyphicon glyphicon-user" aria-hidden="true"></span> {comment.username}</span>
-             <span className="label label-success"><span className="glyphicon glyphicon-time" aria-hidden="true"></span> {comment.date} ago</span>
+             <span className="label label-success"><span className="glyphicon glyphicon-time" aria-hidden="true"></span> {timeDiff}</span>
           </h5>
         </li>
       )
@@ -86,12 +97,11 @@ let Thread = React.createClass({
         </div>
 
         <div className="panel-body">
-          <p>{thread.text}</p>
-          <div id="map-canvas" className="view-thread-map"/>
+          {thread.visible ? <div id="map-canvas" className="view-thread-map"/> : ""}
           <h5>
             <span className="label label-warning"><span className="glyphicon glyphicon-user" aria-hidden="true"></span> {thread.user}</span>
-             <span className="label label-success"><span className="glyphicon glyphicon-time" aria-hidden="true"></span> {thread.date} ago</span>
-             <span className="label label-info"><span className="glyphicon glyphicon-record" aria-hidden="true"></span> {thread.location} away</span>
+             <span className="label label-success"><span className="glyphicon glyphicon-time" aria-hidden="true"></span> {timeDiff}</span>
+             <span className="label label-info"><span className="glyphicon glyphicon-record" aria-hidden="true"></span> {distance}</span>
           </h5>
 
           <div className="panel panel-default thread-list">
