@@ -15,6 +15,16 @@ import ThreadStore from '../stores/ThreadStore.js';
 
 console.log('Hola!');
 
+// var localStorage = {
+//   data: {},
+//   setItem: function(key, value){
+//     this.data[key] = value;
+//   },
+//   getItem: function(key){
+//     return this.data[key] ? this.data[key] : false;
+//   }
+// }
+
 // App
 let App = React.createClass({
   getInitialState(){
@@ -97,9 +107,9 @@ let App = React.createClass({
 });
 
 let routes = (
+
   <Route name="app" path="/" handler={App}>
     <Redirect from="/" to="/threads" />
-    <Route name="login" path="/login" handler={Login}/>
     <Route name="threads" path="/threads" handler={ThreadList}/>
     <Route name="newThread" path="/threads/new" handler={NewThread}/>
     <Route name="thread" path="/thread/:threadId" handler={Thread}/>
