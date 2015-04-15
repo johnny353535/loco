@@ -40,7 +40,7 @@ let ThreadList = React.createClass({
       var timeDiff = Moment(thread.date, "x").fromNow();
 
       var locationDiff = parseInt(Geolib.getDistance(_this.props.location, thread.location));
-      var badgeContent = this.state.sortBy == "closest" ? (locationDiff+' meters away') : this.state.sortBy = "recent" ? timeDiff : "";
+      var badgeContent = this.state.sortBy == "closest" ? (locationDiff+' meters away') : this.state.sortBy == "recent" ? timeDiff : "";
 
       if(locationDiff > thread.reach) return false;
 
