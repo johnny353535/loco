@@ -34,6 +34,16 @@ navigator.geolocation.getCurrentPosition = function(callback, error){
 }
 
 
+// var localStorage = {
+//   data: {},
+//   setItem: function(key, value){
+//     this.data[key] = value;
+//   },
+//   getItem: function(key){
+//     return this.data[key] ? this.data[key] : false;
+//   }
+// }
+
 // App
 let App = React.createClass({
   getInitialState(){
@@ -123,5 +133,6 @@ let App = React.createClass({
     );
   }
 });
+
 
 export default App;

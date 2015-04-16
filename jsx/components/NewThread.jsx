@@ -5,6 +5,7 @@ if(typeof window !== "undefined"){
   var GoogleMapsLoader = require('google-maps');
 }
 
+
 class NewThread extends React.Component {
   constructor(props){
     super(props);
@@ -26,6 +27,7 @@ class NewThread extends React.Component {
       this.google = google;
       if(this.props.location) this.initializeMap();
     }.bind(this));
+
   }
 
   componentDidUpdate(prevProps, prevState){
@@ -101,6 +103,13 @@ class NewThread extends React.Component {
     this.initializeMap();
   }
 
+<<<<<<< HEAD
+=======
+    // Update map
+    this.initializeMap();
+  }
+
+>>>>>>> origin/master
   showLocationHandler(event){
 
     var newState = this.state;
