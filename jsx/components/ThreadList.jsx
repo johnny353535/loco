@@ -57,15 +57,14 @@ let ThreadList = React.createClass({
       )
     }.bind(this));
 
-    console.log(threads)
 
     return (
       <div className="panel panel-default thread-list">
         <div className="panel-heading">
           <div className="sortByWrapper">
             <div className="btn-group" role="group">
-              <button type="button" className={"btn btn-default btn-xs "+(!!(this.state.sortBy == "closest") ? "active" : null)} onClick={function(){ _this.sortThreads("closest"); }}><span className="glyphicon glyphicon-map-marker"></span> Closest</button>
-              <button type="button" className={"btn btn-default btn-xs "+(!!(this.state.sortBy == "recent") ? "active" : null)} onClick={function(){ _this.sortThreads("recent"); }}><span className="glyphicon glyphicon-time"></span> Recent</button>
+              <button type="button" className={"btn btn-default btn-xs "+(!!(_this.state.sortBy == "closest") ? "active" : null)} onClick={function(){ _this.sortThreads("closest"); }}><span className="glyphicon glyphicon-map-marker"></span> Closest</button>
+              <button type="button" className={"btn btn-default btn-xs "+(!!(_this.state.sortBy == "recent") ? "active" : null)} onClick={function(){ _this.sortThreads("recent"); }}><span className="glyphicon glyphicon-time"></span> Recent</button>
             </div>
           </div>
           <h3 className="panel-title"><span className="glyphicon glyphicon-list"></span> Threads</h3>

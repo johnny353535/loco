@@ -1,19 +1,38 @@
 import React from 'react';
-import Router from 'react-router';
-import { DefaultRoute, Link, Route, RouteHandler, Redirect } from 'react-router';
+import { RouteHandler } from 'react-router';
+
+if(typeof window !== "undefined"){
+  var jQuery = require('jquery');
+  window.jQuery = jQuery;
+  var Bootstrap = require('bootstrap');
+  var GoogleMapsLoader = require('google-maps');
+}
+
+import Header from './Header.jsx';
+import Setup from './Setup.jsx';
+
+import ThreadStore from '../../stores/ThreadStore.js';
+
+//var GoogleMapsLoader = require('google-maps');
 
 
-import Header from './components/Header.jsx';
-import ThreadList from './components/ThreadList.jsx';
-import Thread from './components/Thread.jsx';
-import NewThread from './components/NewThread.jsx';
-import Map from './components/Map.jsx';
-import Setup from './components/Setup.jsx';
-import Login from './components/Login.jsx';
+var localStorage = {
+  data: {},
+  setItem: function(key, value){
+    this.data[key] = value;
+  },
+  getItem: function(key){
+    return this.data[key] ? this.data[key] : false;
+  }
+}
 
-import ThreadStore from '../stores/ThreadStore.js';
+var navigator = {};
+navigator.geolocation = {};
+navigator.geolocation.getCurrentPosition = function(callback, error){
+  var dummyLocation = {"timestamp":1429100674214,"coords":{"speed":null,"heading":null,"altitudeAccuracy":null,"accuracy":150,"altitude":null,"longitude":9.999,"latitude":46.999}};
+  callback(dummyLocation);
+}
 
-console.log('Hola!');
 
 // App
 let App = React.createClass({
@@ -28,7 +47,14 @@ let App = React.createClass({
       this.threadStore = new ThreadStore(threads);
   },
   componentDidMount(){
-    this.getUserLocation();
+
+    if(!window) return;
+
+    GoogleMapsLoader.load(function(google) {
+      this.google = google;
+      this.getUserLocation();
+    }.bind(this));
+
   },
   setUsername(username){
     if(this.usernameIsValid(username)){
@@ -51,6 +77,8 @@ let App = React.createClass({
 
     // Get the user's location
     navigator.geolocation.getCurrentPosition(function(position){
+
+      console.log(JSON.stringify(position))
 
       var location = position.coords;
       console.log("User's location", location);
@@ -96,18 +124,4 @@ let App = React.createClass({
   }
 });
 
-let routes = (
-  <Route name="app" path="/" handler={App}>
-    <Redirect from="/" to="/threads" />
-    <Route name="login" path="/login" handler={Login}/>
-    <Route name="threads" path="/threads" handler={ThreadList}/>
-    <Route name="newThread" path="/threads/new" handler={NewThread}/>
-    <Route name="thread" path="/thread/:threadId" handler={Thread}/>
-    <Route name="map" path="/map" handler={Map}/>
-    <Route name="setup" path="/setup" handler={Setup}/>
-  </Route>
-);
-
-Router.run(routes, Router.HistoryLocation, function (Handler) {
-  React.render(<Handler/>, document.body);
-});
+export default App;

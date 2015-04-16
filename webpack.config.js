@@ -1,11 +1,24 @@
 var webpack = require('webpack');
+var path = require('path');
+var fs = require('fs');
+
+var nodeModules = {};
+fs.readdirSync('node_modules')
+  .filter(function(x) {
+    return ['.bin'].indexOf(x) === -1;
+  })
+  .forEach(function(mod) {
+    nodeModules[mod] = 'commonjs ' + mod;
+  });
+
+
 module.exports = {
     entry: [
-      'webpack/hot/only-dev-server',
-      "./jsx/index.js"
+
+      "./jsx/client.jsx"
     ],
     output: {
-        path: __dirname + '/build',
+        path: __dirname,
         filename: "bundle.js",
         sourceMapFilename: "bundle.js.map"
     },
@@ -19,6 +32,6 @@ module.exports = {
     historyApiFallback: true,
     plugins: [
       new webpack.NoErrorsPlugin()
-    ]
-
+    ],
+    //externals: nodeModules
 };

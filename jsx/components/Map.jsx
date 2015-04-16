@@ -1,10 +1,20 @@
 import React from 'react';
-var GoogleMapsAPI = window.google.maps;
+
+if(typeof window !== "undefined"){
+  var GoogleMapsLoader = require('google-maps');
+}
 
 
 var Map = React.createClass({
   componentDidMount(){
-    this.initializeMap();
+
+    if(!window) return;
+
+    GoogleMapsLoader.load(function(google) {
+      this.google = google;
+      this.initializeMap();
+    }.bind(this));
+
   },
   componentDidUpdate(prevProps, prevState){
     if(this.props.location && prevProps.location != this.props.location){
@@ -15,14 +25,14 @@ var Map = React.createClass({
 
     var _this = this;
     var map = this.map;
-    var userLocation = new google.maps.LatLng(this.props.location.latitude, this.props.location.longitude);
+    var userLocation = new this.google.maps.LatLng(this.props.location.latitude, this.props.location.longitude);
 
     var mapOptions = {
       zoom: 14,
       disableDefaultUI: false
     };
 
-    map = new GoogleMapsAPI.Map(document.getElementById('map-canvas'), mapOptions);
+    map = new this.google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
     var marker = new google.maps.Marker({
       position: userLocation,
@@ -64,11 +74,11 @@ var Map = React.createClass({
 
     var options = {
       map: map,
-      position: new GoogleMapsAPI.LatLng(60, 105),
+      position: new this.google.maps.LatLng(60, 105),
       content: content
     };
 
-    var infowindow = new GoogleMapsAPI.InfoWindow(options);
+    var infowindow = new this.google.maps.InfoWindow(options);
     map.setCenter(options.position);
   },
   render() {

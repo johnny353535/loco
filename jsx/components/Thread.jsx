@@ -3,7 +3,9 @@ import Moment from 'moment';
 import Geolib from 'geolib';
 import ThreadStore from '../../stores/ThreadStore.js';
 
-var GoogleMapsAPI = window.google.maps;
+if(typeof window !== "undefined"){
+  var GoogleMapsLoader = require('google-maps');
+}
 
 
 let Thread = React.createClass({
@@ -13,7 +15,13 @@ let Thread = React.createClass({
     return {thread: this.props.threads.get(threadId)};
   },
   componentDidMount(){
-    if(this.state.thread.get("visible")) this.initializeMap();
+
+    if(!window) return;
+
+    GoogleMapsLoader.load(function(google) {
+      this.google = google;
+      if(this.state.thread.get("visible")) this.initializeMap();
+    }.bind(this));
   },
   contextTypes: {
     router: React.PropTypes.func
@@ -29,13 +37,13 @@ let Thread = React.createClass({
       zoom: 13,
       disableDefaultUI: true
     };
-    map = new GoogleMapsAPI.Map(document.getElementById('map-canvas'),
+    map = new this.google.maps.Map(document.getElementById('map-canvas'),
         mapOptions);
 
     var location = this.state.thread.get("location");
-    var pos = new GoogleMapsAPI.LatLng(location.latitude, location.longitude);
+    var pos = new this.google.maps.LatLng(location.latitude, location.longitude);
 
-    var marker = new google.maps.Marker({
+    var marker = new this.google.maps.Marker({
       position: pos,
       map: map,
       title: 'Your location'

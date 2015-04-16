@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-var GoogleMapsAPI = window.google.maps;
+if(typeof window !== "undefined"){
+  var GoogleMapsLoader = require('google-maps');
+}
 
 class NewThread extends React.Component {
   constructor(props){
@@ -17,9 +19,13 @@ class NewThread extends React.Component {
   }
 
   componentDidMount(){
-    if(this.props.location){
-      this.initializeMap();
-    }
+
+    if(!window) return;
+
+    GoogleMapsLoader.load(function(google) {
+      this.google = google;
+      if(this.props.location) this.initializeMap();
+    }.bind(this));
   }
 
   componentDidUpdate(prevProps, prevState){
@@ -41,24 +47,24 @@ class NewThread extends React.Component {
 
     var _this = this;
     var map = this.map;
-    var pos = new google.maps.LatLng(this.props.location.latitude,this.props.location.longitude);
+    var pos = new this.google.maps.LatLng(this.props.location.latitude,this.props.location.longitude);
 
     var mapOptions = {
       zoom: 14,
       disableDefaultUI: true
     };
 
-    map = new GoogleMapsAPI.Map(document.getElementById('map-canvas'), mapOptions);
+    map = new this.google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
     if(_this.state.showLocationPin){
-      var marker = new google.maps.Marker({
+      var marker = new this.google.maps.Marker({
         position: pos,
         map: map,
         title: 'Your location'
       });
     }
 
-    var reachCircle = new google.maps.Circle({
+    var reachCircle = new this.google.maps.Circle({
       strokeColor: '#2e6da4',
       strokeOpacity: 0.8,
       strokeWeight: 1,
@@ -90,9 +96,6 @@ class NewThread extends React.Component {
     newState.reach = reach;
 
     this.setState(newState);
-
-    // Update map
-    this.initializeMap();
 
     // Update map
     this.initializeMap();
