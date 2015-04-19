@@ -1,3 +1,5 @@
+console.log('Server');
+
 var express = require('express');
 var app = express();
 var path = require('path');
@@ -5,57 +7,47 @@ var path = require('path');
 var React = require('react');
 var Router = require('react-router');
 
-var App = require('./components/App.jsx')
+import routes from './routes.jsx';
 
-// var router = Router.create({
-//   routes: routes,
-//   location: "/threads",
-//   onAbort: function defaultAbortHandler(abortReason, location) {
-//     console.log("nooooooo!!!!", abortReason);
-//     router.makePath(abortReason.to, abortReason.params, abortReason.query);
-//     res.redirect('/threads');
-//   }
-// });
 
 app.use('/public', express.static(__dirname + '/public'));
+var App = require('./components/App.jsx')
 
-app.get('/', function (req, res) {
 
-  var path = "/";
+app.use(function(req, res, next) {
+  //if(req.url == "/public/js/client.js") next();
 
-  //router.run(function (Handler) {
-    var appHtml = React.renderToString(<App />);
+  var router = Router.create({
+    location: req.url,
+    routes: routes,
+    onAbort: function defaultAbortHandler(abortReason, location) {
+      console.log("nooooooo!!!!", abortReason);
+      router.makePath(abortReason.to, abortReason.params, abortReason.query);
+      res.redirect('/threads');
+    }
+  })
 
+  router.run(function(Handler, state) {
     var html = (
        <html>
           <head>
-            <meta charset="utf-8" />
+            <meta charSet="utf-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1" />
             <title>Loco server-rendered</title>
-            <link rel="stylesheet" type="text/css" href="css/style.css" />
+            <link rel="stylesheet" type="text/css" href="http://localhost:8000/public/css/style.css" />
           </head>
           <body>
-            {appHtml}
-            <script src="bundle.js"></script>
+            <Handler/>
+            <script src="http://localhost:8000/public/js/client.js"></script>
           </body>
         </html>
       );
 
-    res.send(html);
-  //});
 
+    return res.send(React.renderToStaticMarkup(html));
 
-});
-
-// app.get('/threads', function (req, res) {
-//   console.log('/threads')
-//
-//   router.run(function (Handler) {
-//     var html = React.renderToString(<Handler />);
-//     //var html = React.render(<Handler />, document.body);
-//     res.send("<!doctype html>"+html);
-//   });
-// });
+  })
+})
 
 
 var server = app.listen(3000, function () {

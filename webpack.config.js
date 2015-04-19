@@ -12,15 +12,36 @@ fs.readdirSync('node_modules')
   });
 
 
-module.exports = {
+module.exports = [
+  {
+    name: "client",
     entry: [
-
       "./jsx/client.jsx"
     ],
     output: {
         path: __dirname,
-        filename: "bundle.js",
-        sourceMapFilename: "bundle.js.map"
+        filename: "public/js/client.js"
+    },
+    module: {
+        loaders: [
+            { test: /\.jsx?$/, loaders: ['react-hot', 'babel'], exclude: /node_modules/ },
+            { test: /\.jsx$/, exclude: /node_modules/, loader: 'babel-loader'},
+            { test: /\.css$/, loader: "style!css" }
+        ]
+    },
+    historyApiFallback: true,
+    plugins: [
+      new webpack.NoErrorsPlugin()
+    ]
+  },
+  {
+    name: "server",
+    entry: [
+      "./jsx/server.jsx"
+    ],
+    output: {
+        path: __dirname,
+        filename: "server.js"
     },
     module: {
         loaders: [
@@ -33,5 +54,8 @@ module.exports = {
     plugins: [
       new webpack.NoErrorsPlugin()
     ],
-    //externals: nodeModules
-};
+    externals: nodeModules
+  }
+
+
+];

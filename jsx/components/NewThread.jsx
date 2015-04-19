@@ -103,17 +103,10 @@ class NewThread extends React.Component {
     this.initializeMap();
   }
 
-<<<<<<< HEAD
-=======
-    // Update map
-    this.initializeMap();
-  }
-
->>>>>>> origin/master
   showLocationHandler(event){
 
     var newState = this.state;
-    var checked = event.target.checked;;
+    var checked = event.target.checked;
     newState.showLocationPin = checked;
 
     this.setState(newState);
@@ -132,7 +125,7 @@ class NewThread extends React.Component {
         location: this.props.location,
         reach: this.state.reach,
         visible: this.state.showLocationPin
-      }
+      };
 
     this.props.threads.add(thread);
   }

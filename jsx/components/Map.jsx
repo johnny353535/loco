@@ -8,7 +8,7 @@ if(typeof window !== "undefined"){
 var Map = React.createClass({
   componentDidMount(){
 
-    if(!window) return;
+    if(typeof window !== "undefined") return;
 
     GoogleMapsLoader.load(function(google) {
       this.google = google;
@@ -41,7 +41,7 @@ var Map = React.createClass({
     });
 
     var image = {
-      url: 'img/marker_blue.png'
+      url: 'public/img/marker_blue.png'
     };
 
     var threads = this.props.threads.toJSON();
