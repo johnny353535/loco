@@ -1,8 +1,8 @@
 import React from 'react';
 import { RouteHandler } from 'react-router';
+import jQuery from 'jquery';
 
 if(typeof window !== "undefined"){
-  var jQuery = require('jquery');
   window.jQuery = jQuery;
   var Bootstrap = require('bootstrap');
   var GoogleMapsLoader = require('google-maps');
@@ -13,36 +13,34 @@ import Setup from './Setup.jsx';
 
 import ThreadStore from '../../stores/ThreadStore.js';
 
-//var GoogleMapsLoader = require('google-maps');
+var localStorage = (typeof window !="undefined") ? window.localStorage : null;
+var navigator = (typeof window !="undefined") ? window.navigator : null;
 
+// Shim geolocation and localstorage if the app is run on the server
+if(typeof window == "undefined"){
 
-var localStorage = {
-  data: {},
-  setItem: function(key, value){
-    this.data[key] = value;
-  },
-  getItem: function(key){
-    return this.data[key] ? this.data[key] : false;
+  var localStorage = {
+    data: {},
+    setItem: function(key, value){
+      this.data[key] = value;
+    },
+    getItem: function(key){
+      return this.data[key] ? this.data[key] : false;
+    }
   }
+
+
+
+  var navigator = {};
+  navigator.geolocation = {};
+  navigator.geolocation.getCurrentPosition = function(callback, error){
+    var dummyLocation = {"timestamp":1429100674214,"coords":{"speed":null,"heading":null,"altitudeAccuracy":null,"accuracy":150,"altitude":null,"longitude":9.999,"latitude":46.999}};
+    callback(dummyLocation);
+  }
+
+} else {
+  var GoogleMapsLoader = require('google-maps');
 }
-
-var navigator = {};
-navigator.geolocation = {};
-navigator.geolocation.getCurrentPosition = function(callback, error){
-  var dummyLocation = {"timestamp":1429100674214,"coords":{"speed":null,"heading":null,"altitudeAccuracy":null,"accuracy":150,"altitude":null,"longitude":9.999,"latitude":46.999}};
-  callback(dummyLocation);
-}
-
-
-// var localStorage = {
-//   data: {},
-//   setItem: function(key, value){
-//     this.data[key] = value;
-//   },
-//   getItem: function(key){
-//     return this.data[key] ? this.data[key] : false;
-//   }
-// }
 
 // App
 let App = React.createClass({
@@ -53,12 +51,21 @@ let App = React.createClass({
     }
   },
   componentWillMount(){
-      var threads = JSON.parse(localStorage.getItem("loco-threads"));
-      this.threadStore = new ThreadStore(threads);
+    // jQuery.ajax({
+    //   url:    'http://localhost:3000/json',
+    //   success: function(result) {
+    //     var threads = result;
+    //     console.log("yup");
+    //   },
+    //   async: false
+    // });
+    var threads = []
+
+    this.threadStore = new ThreadStore(threads);
   },
   componentDidMount(){
 
-    if(!window) return;
+    if(typeof window == "undefined") return;
 
     GoogleMapsLoader.load(function(google) {
       this.google = google;
