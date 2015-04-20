@@ -70,38 +70,9 @@
 
 	var routes = _interopRequire(__webpack_require__(5));
 
-	// var fs = require('fs');
-
-	//
-	// fs.writeFile('./data/threads.json',"test",function(err) {
-	//     if(err) return console.error(err);
-	//     console.log('write done');
-	//   })
-
 	var App = __webpack_require__(6);
 
-	var threads = __webpack_require__(8);
-	console.log(threads);
-	// app.configure(function(){
-	//   app.use(express.bodyParser());
-	// });
-
-	// Deliver threads
-	app.get("/json", function (req, res) {
-	  res.send(JSON.stringify(threads));
-	});
-
-	// Save threads
-	app.post("/json", function (req, res) {
-	  console.log(req.body);
-	});
-
 	app.use(function (req, res, next) {
-
-	  // if(req.url == "/json"){
-	  //   console.log(threads);
-	  //   return;
-	  // };
 
 	  var router = Router.create({
 	    location: req.url,
@@ -169,15 +140,15 @@
 	var Redirect = _reactRouter.Redirect;
 	var RouteHandler = _reactRouter.RouteHandler;
 
-	var ThreadList = _interopRequire(__webpack_require__(12));
+	var ThreadList = _interopRequire(__webpack_require__(11));
 
-	var Thread = _interopRequire(__webpack_require__(13));
+	var Thread = _interopRequire(__webpack_require__(12));
 
-	var NewThread = _interopRequire(__webpack_require__(14));
+	var NewThread = _interopRequire(__webpack_require__(13));
 
-	var Map = _interopRequire(__webpack_require__(15));
+	var Map = _interopRequire(__webpack_require__(14));
 
-	var Setup = _interopRequire(__webpack_require__(16));
+	var Setup = _interopRequire(__webpack_require__(15));
 
 	var App = _interopRequire(__webpack_require__(6));
 
@@ -201,19 +172,22 @@
 
 	var RouteHandler = __webpack_require__(4).RouteHandler;
 
-	var jQuery = _interopRequire(__webpack_require__(9));
+	var jQuery = _interopRequire(__webpack_require__(8));
 
+	// Only include Bootstrap & Google Maps if run in the browser
 	if (typeof window !== "undefined") {
 	  window.jQuery = jQuery;
-	  var Bootstrap = __webpack_require__(10);
-	  var GoogleMapsLoader = __webpack_require__(11);
+	  var Bootstrap = __webpack_require__(9);
+	  var GoogleMapsLoader = __webpack_require__(10);
 	}
 
-	var Header = _interopRequire(__webpack_require__(17));
+	var Header = _interopRequire(__webpack_require__(16));
 
-	var Setup = _interopRequire(__webpack_require__(16));
+	var Setup = _interopRequire(__webpack_require__(15));
 
-	var ThreadStore = _interopRequire(__webpack_require__(18));
+	var ThreadStore = _interopRequire(__webpack_require__(17));
+
+	var threads = __webpack_require__(18).threads;
 
 	var localStorage = typeof window != "undefined" ? window.localStorage : null;
 	var navigator = typeof window != "undefined" ? window.navigator : null;
@@ -238,7 +212,7 @@
 	    callback(dummyLocation);
 	  };
 	} else {
-	  var GoogleMapsLoader = __webpack_require__(11);
+	  var GoogleMapsLoader = __webpack_require__(10);
 	}
 
 	// App
@@ -251,17 +225,8 @@
 	      location: localStorage.getItem("loco-location") ? JSON.parse(localStorage.getItem("loco-location")) : null };
 	  },
 	  componentWillMount: function componentWillMount() {
-	    // jQuery.ajax({
-	    //   url:    'http://localhost:3000/json',
-	    //   success: function(result) {
-	    //     var threads = result;
-	    //     console.log("yup");
-	    //   },
-	    //   async: false
-	    // });
-	    var threads = [];
-
 	    this.threadStore = new ThreadStore(threads);
+	    console.log(this.state);
 	  },
 	  componentDidMount: function componentDidMount() {
 
@@ -571,65 +536,22 @@
 /* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = {
-		"threads": [
-			{
-				"id": 9835,
-				"date": 1429473863140,
-				"user": "test123",
-				"title": "test12",
-				"location": {
-					"speed": null,
-					"heading": null,
-					"altitudeAccuracy": null,
-					"accuracy": 150,
-					"altitude": null,
-					"longitude": 9.999,
-					"latitude": 46.999
-				},
-				"reach": 200,
-				"visible": true,
-				"comments": [
-					{
-						"id": 8576,
-						"text": "asdasd",
-						"username": "test123",
-						"location": {
-							"speed": null,
-							"heading": null,
-							"altitudeAccuracy": null,
-							"accuracy": 150,
-							"altitude": null,
-							"longitude": 9.999,
-							"latitude": 46.999
-						},
-						"date": 1429473865067
-					}
-				]
-			}
-		]
-	}
+	module.exports = require("jquery");
 
 /***/ },
 /* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = require("jquery");
+	module.exports = require("bootstrap");
 
 /***/ },
 /* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = require("bootstrap");
-
-/***/ },
-/* 11 */
-/***/ function(module, exports, __webpack_require__) {
-
 	module.exports = require("google-maps");
 
 /***/ },
-/* 12 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/jonashartweg/Projekte/loco/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/jonashartweg/Projekte/loco/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } (function () {
@@ -711,7 +633,7 @@
 	/* REACT HOT LOADER */ })(); if (false) { (function () { module.hot.dispose(function (data) { data.makeHot = module.makeHot; }); if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/jonashartweg/Projekte/loco/node_modules/react-hot-loader/makeExportsHot.js"), foundReactClasses = false; if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "ThreadList.jsx" + ": " + err.message); } }); } } })(); }
 
 /***/ },
-/* 13 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/jonashartweg/Projekte/loco/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/jonashartweg/Projekte/loco/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } (function () {
@@ -728,10 +650,10 @@
 
 	var Geolib = _interopRequire(__webpack_require__(20));
 
-	var ThreadStore = _interopRequire(__webpack_require__(18));
+	var ThreadStore = _interopRequire(__webpack_require__(17));
 
 	if (typeof window !== "undefined") {
-	  var GoogleMapsLoader = __webpack_require__(11);
+	  var GoogleMapsLoader = __webpack_require__(10);
 	}
 
 	var Thread = React.createClass({
@@ -826,7 +748,7 @@
 	/* REACT HOT LOADER */ })(); if (false) { (function () { module.hot.dispose(function (data) { data.makeHot = module.makeHot; }); if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/jonashartweg/Projekte/loco/node_modules/react-hot-loader/makeExportsHot.js"), foundReactClasses = false; if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "Thread.jsx" + ": " + err.message); } }); } } })(); }
 
 /***/ },
-/* 14 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/jonashartweg/Projekte/loco/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/jonashartweg/Projekte/loco/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } (function () {
@@ -893,7 +815,7 @@
 	var Link = __webpack_require__(4).Link;
 
 	if (typeof window !== "undefined") {
-	  var GoogleMapsLoader = __webpack_require__(11);
+	  var GoogleMapsLoader = __webpack_require__(10);
 	}
 
 	var NewThread = (function (_React$Component) {
@@ -1051,7 +973,7 @@
 	/* REACT HOT LOADER */ })(); if (false) { (function () { module.hot.dispose(function (data) { data.makeHot = module.makeHot; }); if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/jonashartweg/Projekte/loco/node_modules/react-hot-loader/makeExportsHot.js"), foundReactClasses = false; if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "NewThread.jsx" + ": " + err.message); } }); } } })(); }
 
 /***/ },
-/* 15 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/jonashartweg/Projekte/loco/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/jonashartweg/Projekte/loco/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } (function () {
@@ -1065,7 +987,7 @@
 	var React = _interopRequire(__webpack_require__(3));
 
 	if (typeof window !== "undefined") {
-	  var GoogleMapsLoader = __webpack_require__(11);
+	  var GoogleMapsLoader = __webpack_require__(10);
 	}
 
 	var Map = React.createClass({
@@ -1073,15 +995,18 @@
 
 	  componentDidMount: function componentDidMount() {
 
-	    if (typeof window !== "undefined") {
+	    if (typeof window == "undefined") {
 	      return;
-	    }GoogleMapsLoader.load((function (google) {
+	    }
+
+	    GoogleMapsLoader.load((function (google) {
 	      this.google = google;
+	      console.log(google);
 	      this.initializeMap();
 	    }).bind(this));
 	  },
 	  componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
-	    if (this.props.location && prevProps.location != this.props.location) {
+	    if (this.props.location && prevProps.location != this.props.location && this.google) {
 	      this.initializeMap();
 	    }
 	  },
@@ -1109,6 +1034,7 @@
 	    };
 
 	    var threads = this.props.threads.toJSON();
+	    console.log(threads);
 	    for (var i = 0; i < threads.length; i++) {
 
 	      var thread = threads[i];
@@ -1155,7 +1081,7 @@
 	/* REACT HOT LOADER */ })(); if (false) { (function () { module.hot.dispose(function (data) { data.makeHot = module.makeHot; }); if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/jonashartweg/Projekte/loco/node_modules/react-hot-loader/makeExportsHot.js"), foundReactClasses = false; if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "Map.jsx" + ": " + err.message); } }); } } })(); }
 
 /***/ },
-/* 16 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/jonashartweg/Projekte/loco/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/jonashartweg/Projekte/loco/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } (function () {
@@ -1214,7 +1140,7 @@
 	/* REACT HOT LOADER */ })(); if (false) { (function () { module.hot.dispose(function (data) { data.makeHot = module.makeHot; }); if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/jonashartweg/Projekte/loco/node_modules/react-hot-loader/makeExportsHot.js"), foundReactClasses = false; if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "Setup.jsx" + ": " + err.message); } }); } } })(); }
 
 /***/ },
-/* 17 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/jonashartweg/Projekte/loco/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/jonashartweg/Projekte/loco/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } (function () {
@@ -1233,7 +1159,7 @@
 
 	var Link = _reactRouter.Link;
 
-	var _reactRouterBootstrap = __webpack_require__(23);
+	var _reactRouterBootstrap = __webpack_require__(22);
 
 	var ButtonLink = _reactRouterBootstrap.ButtonLink;
 	var NavItemLink = _reactRouterBootstrap.NavItemLink;
@@ -1252,12 +1178,14 @@
 	/* REACT HOT LOADER */ })(); if (false) { (function () { module.hot.dispose(function (data) { data.makeHot = module.makeHot; }); if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/jonashartweg/Projekte/loco/node_modules/react-hot-loader/makeExportsHot.js"), foundReactClasses = false; if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "Header.jsx" + ": " + err.message); } }); } } })(); }
 
 /***/ },
-/* 18 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/jonashartweg/Projekte/loco/node_modules/react-hot-loader/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/jonashartweg/Projekte/loco/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } (function () {
 
 	"use strict";
+
+	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
 	var _createClass = (function () { function defineProperties(target, props) { for (var key in props) { var prop = props[key]; prop.configurable = true; if (prop.value) prop.writable = true; } Object.defineProperties(target, props); } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
@@ -1267,10 +1195,12 @@
 
 	var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
 
-	var _backbone = __webpack_require__(22);
+	var _backbone = __webpack_require__(23);
 
 	var Model = _backbone.Model;
 	var Collection = _backbone.Collection;
+
+	var jQuery = _interopRequire(__webpack_require__(8));
 
 	// Threads
 
@@ -1295,7 +1225,22 @@
 	    save: {
 	      value: function save() {
 	        console.log("Saved threads", this);
-	        localStorage.setItem("loco-threads", JSON.stringify(this.toJSON()));
+	        var threads = this.toJSON();
+	        var data = JSON.stringify(threads[0].threads);
+	        data = {
+	          threads: data
+	        };
+	        console.log(data);
+
+	        // Save threads to server
+	        jQuery.ajax({
+	          type: "POST",
+	          url: "http://localhost:3000/setThreads",
+	          data: JSON.stringify(data),
+	          success: function success() {
+	            console.log("Saved threads to server");
+	          }
+	        });
 	      }
 	    },
 	    nearby: {
@@ -1353,6 +1298,49 @@
 	/* REACT HOT LOADER */ })(); if (false) { (function () { module.hot.dispose(function (data) { data.makeHot = module.makeHot; }); if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/jonashartweg/Projekte/loco/node_modules/react-hot-loader/makeExportsHot.js"), foundReactClasses = false; if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "ThreadStore.js" + ": " + err.message); } }); } } })(); }
 
 /***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+		"threads": [
+			{
+				"id": 9835,
+				"date": 1429473863140,
+				"user": "test123",
+				"title": "test12",
+				"location": {
+					"speed": null,
+					"heading": null,
+					"altitudeAccuracy": null,
+					"accuracy": 150,
+					"altitude": null,
+					"longitude": 9.999,
+					"latitude": 46.999
+				},
+				"reach": 200,
+				"visible": true,
+				"comments": [
+					{
+						"id": 8576,
+						"text": "asdasd",
+						"username": "test123",
+						"location": {
+							"speed": null,
+							"heading": null,
+							"altitudeAccuracy": null,
+							"accuracy": 150,
+							"altitude": null,
+							"longitude": 9.999,
+							"latitude": 46.999
+						},
+						"date": 1429473865067
+					}
+				]
+			}
+		]
+	}
+
+/***/ },
 /* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -1374,13 +1362,13 @@
 /* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = require("backbone");
+	module.exports = require("react-router-bootstrap");
 
 /***/ },
 /* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = require("react-router-bootstrap");
+	module.exports = require("backbone");
 
 /***/ },
 /* 24 */

@@ -8,16 +8,19 @@ if(typeof window !== "undefined"){
 var Map = React.createClass({
   componentDidMount(){
 
-    if(typeof window !== "undefined") return;
+    if(typeof window == "undefined") {
+      return;
+    }
 
     GoogleMapsLoader.load(function(google) {
       this.google = google;
+      console.log(google)
       this.initializeMap();
     }.bind(this));
 
   },
   componentDidUpdate(prevProps, prevState){
-    if(this.props.location && prevProps.location != this.props.location){
+    if(this.props.location && prevProps.location != this.props.location && this.google){
       this.initializeMap();
     }
   },
@@ -45,6 +48,7 @@ var Map = React.createClass({
     };
 
     var threads = this.props.threads.toJSON();
+    console.log(threads)
     for(var i = 0; i < threads.length; i++){
 
       var thread = threads[i];

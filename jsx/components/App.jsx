@@ -2,6 +2,7 @@ import React from 'react';
 import { RouteHandler } from 'react-router';
 import jQuery from 'jquery';
 
+// Only include Bootstrap & Google Maps if run in the browser
 if(typeof window !== "undefined"){
   window.jQuery = jQuery;
   var Bootstrap = require('bootstrap');
@@ -12,6 +13,7 @@ import Header from './Header.jsx';
 import Setup from './Setup.jsx';
 
 import ThreadStore from '../../stores/ThreadStore.js';
+var threads = require('json!../../data/threads.json').threads;
 
 var localStorage = (typeof window !="undefined") ? window.localStorage : null;
 var navigator = (typeof window !="undefined") ? window.navigator : null;
@@ -51,19 +53,11 @@ let App = React.createClass({
     }
   },
   componentWillMount(){
-    // jQuery.ajax({
-    //   url:    'http://localhost:3000/json',
-    //   success: function(result) {
-    //     var threads = result;
-    //     console.log("yup");
-    //   },
-    //   async: false
-    // });
-    var threads = []
-
     this.threadStore = new ThreadStore(threads);
+    console.log(this.state)
   },
   componentDidMount(){
+
 
     if(typeof window == "undefined") return;
 

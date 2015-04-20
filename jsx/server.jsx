@@ -10,12 +10,9 @@ var Router = require('react-router');
 import routes from './routes.jsx';
 
 
-app.use('/public', express.static(__dirname + '/public'));
 var App = require('./components/App.jsx')
 
-
 app.use(function(req, res, next) {
-  //if(req.url == "/public/js/client.js") next();
 
   var router = Router.create({
     location: req.url,
@@ -42,7 +39,6 @@ app.use(function(req, res, next) {
           </body>
         </html>
       );
-
 
     return res.send(React.renderToStaticMarkup(html));
 
