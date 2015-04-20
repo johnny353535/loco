@@ -3119,17 +3119,22 @@
 	      value: function save() {
 	        console.log("Saved threads", this);
 	        var threads = this.toJSON();
-	        var data = JSON.stringify(threads[0].threads);
-	        data = {
-	          threads: data
+
+	        // JSONify comment stores
+	        for (var i = 0; i < threads.length; i++) {
+	          threads[i].comments = threads[i].comments.toJSON();
+	        }
+
+	        var data = {
+	          threads: threads
 	        };
 	        console.log(data);
 
 	        // Save threads to server
 	        jQuery.ajax({
 	          type: "POST",
-	          url: "http://localhost:3000/setThreads",
-	          data: JSON.stringify(data),
+	          url: "http://localhost:4000/setThreads",
+	          data: data,
 	          success: function success() {
 	            console.log("Saved threads to server");
 	          }
@@ -3235,38 +3240,72 @@
 	module.exports = {
 		"threads": [
 			{
-				"id": 9835,
-				"date": 1429473863140,
+				"id": "9835",
+				"date": "1429473863140",
 				"user": "test123",
 				"title": "test12",
 				"location": {
-					"speed": null,
-					"heading": null,
-					"altitudeAccuracy": null,
-					"accuracy": 150,
-					"altitude": null,
-					"longitude": 9.999,
-					"latitude": 46.999
+					"speed": "",
+					"heading": "",
+					"altitudeAccuracy": "",
+					"accuracy": "150",
+					"altitude": "",
+					"longitude": "9.999",
+					"latitude": "46.999"
 				},
-				"reach": 200,
-				"visible": true,
+				"reach": "200",
+				"visible": "true",
 				"comments": [
 					{
-						"id": 8576,
+						"id": "8576",
 						"text": "asdasd",
 						"username": "test123",
 						"location": {
-							"speed": null,
-							"heading": null,
-							"altitudeAccuracy": null,
-							"accuracy": 150,
-							"altitude": null,
-							"longitude": 9.999,
-							"latitude": 46.999
+							"speed": "",
+							"heading": "",
+							"altitudeAccuracy": "",
+							"accuracy": "150",
+							"altitude": "",
+							"longitude": "9.999",
+							"latitude": "46.999"
 						},
-						"date": 1429473865067
+						"date": "1429473865067"
 					}
 				]
+			},
+			{
+				"id": "8940",
+				"date": "1429549608665",
+				"user": "asdasdasd",
+				"title": "asdasdasd",
+				"location": {
+					"speed": "",
+					"heading": "",
+					"altitudeAccuracy": "",
+					"accuracy": "150",
+					"altitude": "",
+					"longitude": "9.999",
+					"latitude": "46.997"
+				},
+				"reach": "100",
+				"visible": "true"
+			},
+			{
+				"id": "2794",
+				"date": "1429549639966",
+				"user": "asdasdasd",
+				"title": "yooyoy",
+				"location": {
+					"speed": "",
+					"heading": "",
+					"altitudeAccuracy": "",
+					"accuracy": "150",
+					"altitude": "",
+					"longitude": "9.999",
+					"latitude": "46.997"
+				},
+				"reach": "100",
+				"visible": "true"
 			}
 		]
 	}
